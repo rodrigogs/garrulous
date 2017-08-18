@@ -20,7 +20,7 @@ module.exports = (options) => {
   const files = fs.readdirSync(inDirectory);
   files.forEach((file) => {
     debug('converting file', file);
-    const buffer = fs.readFileSync(path.join(inDirectory, file));
+    const buffer = fs.readFileSync(path.join(inDirectory, file), { encoding: fromEncode });
     const convertered = iconv.convert(buffer);
     debug('writing file', file);
     fs.writeFileSync(path.join(outDirectory, file), convertered, { encoding: 'binary' });

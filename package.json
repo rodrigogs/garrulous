@@ -1,6 +1,7 @@
 {
   "name": "garrulous",
-  "version": "1.0.0",
+  "description": "Convert any encoding to any encoding",
+  "version": "1.0.1",
   "main": "index.js",
   "repository": "git@github.com:rodrigogs/garrulous.git",
   "author": {
