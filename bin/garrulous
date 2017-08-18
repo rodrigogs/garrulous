@@ -9,6 +9,7 @@ program
   .option('-o, --outDirectory <outDirectory>', 'Output directory')
   .option('-f, --fromEncode <fromEncode>', 'From encode')
   .option('-t, --toEncode <toEncode>', 'To encode')
+  .option('-r, --recursive', 'Recursively look for sub directories inside the input directory')
   .option('-d, --debug', 'Output debug information')
   .parse(process.argv);
 
