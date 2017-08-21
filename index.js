@@ -13,8 +13,10 @@ const createDir = (dir) => {
   mkdirp(dir);
 };
 
-const convert = (inDirectory, outDirectory, fromEncode, toEncode, recursive) => {
-  iconv = new Iconv(fromEncode, `${toEncode}//TRANSLIT`);
+const convert = (options) => {
+  const { inDirectory, outDirectory, fromEncoding, toEncoding, recursive } = options;
+
+  if (!iconv) iconv = new Iconv(fromEncoding, `${toEncoding}//TRANSLIT`);
 
   debug('creating directory', outDirectory);
   createDir(outDirectory);
@@ -32,13 +34,18 @@ const convert = (inDirectory, outDirectory, fromEncode, toEncode, recursive) => 
       if (recursive) {
         debug('converting', filePath, 'files recursively');
         const out = path.join(outDirectory, file);
-        return convert(filePath, out, fromEncode, toEncode, recursive);
+        return convert({
+          inDirectory: filePath,
+          outDirectory: out,
+          fromEncoding,
+          toEncoding,
+          recursive });
       }
       return;
     }
 
     debug('converting file', file);
-    const buffer = fs.readFileSync(filePath, { encoding: fromEncode });
+    const buffer = fs.readFileSync(filePath, { encoding: 'binary' });
     const convertered = iconv.convert(buffer);
     debug('writing file', file);
     fs.writeFileSync(path.join(outDirectory, file), convertered, { encoding: 'binary' });
@@ -47,7 +54,4 @@ const convert = (inDirectory, outDirectory, fromEncode, toEncode, recursive) => 
   debug('finished directory', inDirectory);
 };
 
-module.exports = (options) => {
-  const { inDirectory, outDirectory, fromEncode, toEncode, recursive } = options;
-  convert(inDirectory, outDirectory, fromEncode, toEncode, recursive);
-};
+module.exports = convert;
